@@ -15,10 +15,10 @@ public class SplashScreen implements Screen {
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	
+	TextureRegion libgdx;
+	
 	float stateTime = 0;
 	float alpha = 0;
-	boolean reverse = false;
-	TextureRegion libgdx;
 	
 	public SplashScreen(Game game) {
 		this.game = game;
@@ -30,16 +30,13 @@ public class SplashScreen implements Screen {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		if (alpha < 1 && stateTime == 0) {
+		stateTime += delta;
+		
+		if (stateTime < 1) {
 			alpha += delta;
 			alpha = Math.min(alpha, 1);
 		}
-		else if (alpha == 1) {
-			stateTime += delta;
-			if (stateTime >= 2)
-				alpha -= delta;
-		}
-		else {
+		else if (stateTime > 3) {
 			alpha -= delta;
 			if (alpha <= 0)
 				game.setScreen(new GameScreen());
