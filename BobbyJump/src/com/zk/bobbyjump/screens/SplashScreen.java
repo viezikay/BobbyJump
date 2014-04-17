@@ -38,6 +38,7 @@ public class SplashScreen implements Screen {
 		}
 		else if (stateTime > 3) {
 			alpha -= delta;
+			alpha = Math.max(alpha, 0);
 			if (alpha <= 0)
 				game.setScreen(new GameScreen());
 		}
