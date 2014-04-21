@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class GameObject {
 	
 	public Vector2 position;
-	public Vector2 dimention;
+	public Vector2 dimension;
 	public Vector2 scale;
 	public Vector2 origin;
 	public float rotation;

@@ -23,7 +23,7 @@ public class Bobby extends GameObject {
 	public void ini() {
 		
 		position = new Vector2(Constants.ViewportW/2, 1);
-		dimention = new Vector2(1, 1);
+		dimension = new Vector2(1, 1);
 		origin = new Vector2(0.5f, 0.5f);
 		scale = new Vector2(1, 1);
 		rotation = 0;
@@ -62,10 +62,10 @@ public class Bobby extends GameObject {
 			jump();
 		}
 		
-		if (position.x < -dimention.x/2 && scale.x < 0)
-			position.x = 10 + dimention.x/2;
-		else if (position.x > 10 + dimention.x/2 && scale.x > 0)
-			position.x = -dimention.x/2;
+		if (position.x < -dimension.x/2 && scale.x < 0)
+			position.x = 10 + dimension.x/2;
+		else if (position.x > 10 + dimension.x/2 && scale.x > 0)
+			position.x = -dimension.x/2;
 			
 		bound.setPosition(position.x - bound.width/2, position.y - bound.height/2);
 	}
@@ -78,7 +78,7 @@ public class Bobby extends GameObject {
 		
 		batch.begin();
 		batch.draw(textureRegion, position.x - origin.x, position.y - origin.y, 
-				origin.x, origin.y, dimention.x, dimention.y, 
+				origin.x, origin.y, dimension.x, dimension.y, 
 				scale.x, scale.y, rotation);
 		batch.end();
 	}
