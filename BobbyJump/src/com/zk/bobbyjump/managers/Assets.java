@@ -13,6 +13,7 @@ public class Assets implements Disposable {
 	
 	public AssetSplash splash;
 	public AssetsBobby bobby;
+	public AssetsGameObject game;
 	
 	private AssetManager assetManager;
 	
@@ -26,6 +27,7 @@ public class Assets implements Disposable {
 		
 		splash = new AssetSplash(atlas);
 		bobby = new AssetsBobby(atlas);
+		game = new AssetsGameObject(atlas);
 	}
 	
 	public class AssetSplash {
@@ -54,6 +56,19 @@ public class Assets implements Disposable {
 			
 			keyFrames = atlas.findRegions("jump");
 			jump = new Animation(0.2f, keyFrames, Animation.LOOP);
+		}
+	}
+	
+	public class AssetsGameObject {
+		
+		public Animation platform;
+		
+		public AssetsGameObject(TextureAtlas atlas) {
+			
+			Array<AtlasRegion> keyFrames = null;
+			
+			keyFrames = atlas.findRegions("platform");
+			platform = new Animation(.15f, keyFrames);
 		}
 	}
 

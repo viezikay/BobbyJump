@@ -11,7 +11,7 @@ import com.zk.bobbyjump.utils.Constants.BobbyState;
 
 public class Bobby extends GameObject {
 	
-	public static final float MaxVelocityX = 9;
+	public static final float MaxVelocityX = 6;
 	public static final float JumpVelocity = 8;
 	
 	BobbyState state;
@@ -22,14 +22,14 @@ public class Bobby extends GameObject {
 	@Override
 	public void ini() {
 		
-		position = new Vector2(Constants.ViewportW/2, 1);
-		dimension = new Vector2(1, 1);
-		origin = new Vector2(0.5f, 0.5f);
+		position = new Vector2(Constants.ViewportW/2, 5);
+		dimension = new Vector2(1.2f, 1.2f);
+		origin = new Vector2(dimension.x/2, dimension.y/2);
 		scale = new Vector2(1, 1);
 		rotation = 0;
 		velocity = new Vector2(0, -2);
 		
-		bound = new Rectangle(0, 0, 0.6f, 1);
+		bound = new Rectangle(0, 0, dimension.x*0.6f, dimension.y);
 		
 		fall = Assets.instance.bobby.fall;
 		jump = Assets.instance.bobby.jump;
@@ -52,7 +52,7 @@ public class Bobby extends GameObject {
 			position.y += velocity.y * deltaTime;
 			
 			if (velocity.y < 0) {
-				setState(BobbyState.Dying);
+				setState(BobbyState.Falling);
 			}
 			
 		}

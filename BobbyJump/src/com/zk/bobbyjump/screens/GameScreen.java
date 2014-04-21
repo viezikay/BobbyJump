@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zk.bobbyjump.objects.Bobby;
+import com.zk.bobbyjump.objects.Platform;
 import com.zk.bobbyjump.utils.Constants;
 
 public class GameScreen implements Screen {
@@ -16,6 +17,7 @@ public class GameScreen implements Screen {
 	ShapeRenderer renderer;
 	
 	Bobby bobby;
+	Platform platform;
 	
 	@Override
 	public void render(float delta) {
@@ -24,10 +26,13 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		bobby.update(delta);
+		platform.update(delta);
 		
 		bobby.render(batch);
+		platform.render(batch);
 		
 //		bobby.renderBound(renderer);
+//		platform.renderBound(renderer);
 	}
 
 	@Override
@@ -49,6 +54,7 @@ public class GameScreen implements Screen {
 		renderer.setProjectionMatrix(camera.combined);
 		
 		bobby = new Bobby();
+		platform = new Platform();
 	}
 
 	@Override
