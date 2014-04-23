@@ -6,6 +6,7 @@ public interface Constants {
 	public static final float viewportH = 15;
 	
 	public static final float Gravity = -10;
+	public static final float Friction = .1f;
 	
 	public enum BobbyState {
 		Falling,

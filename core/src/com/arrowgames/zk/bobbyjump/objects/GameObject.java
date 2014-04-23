@@ -23,7 +23,7 @@ public abstract class GameObject {
 	TextureRegion textureRegion;
 	Animation animation;
 	
-	Rectangle bound;
+	public Rectangle bound;
 	Color debugColor;
 	
 	public GameObject() {

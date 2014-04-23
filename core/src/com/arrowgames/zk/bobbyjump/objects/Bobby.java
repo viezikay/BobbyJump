@@ -12,17 +12,21 @@ import com.badlogic.gdx.math.Vector2;
 public class Bobby extends GameObject {
 	
 	public static final float MaxVelocityX = 6;
-	public static final float JumpVelocity = 8;
+	public static final float JumpVelocity = 10;
+	
+	public float deadPoint;
 	
 	BobbyState state;
 	
 	Animation fall;
 	Animation jump;
 	
+	boolean die;
+	
 	@Override
 	public void ini() {
 		
-		position = new Vector2(Constants.ViewportW/2, 5);
+		position = new Vector2();
 		dimension = new Vector2(1.2f, 1.2f);
 		origin = new Vector2(dimension.x/2, dimension.y/2);
 		scale = new Vector2(1, 1);
@@ -33,8 +37,15 @@ public class Bobby extends GameObject {
 		
 		fall = Assets.instance.bobby.fall;
 		jump = Assets.instance.bobby.jump;
+	}
+	
+	public void respawn() {
 		
-		move(4);
+		position.set(Constants.ViewportW/2, 2);
+		velocity.set(0, -2);
+		bound.setPosition(position);
+		
+		die = false;
 	}
 
 	@Override
@@ -43,6 +54,8 @@ public class Bobby extends GameObject {
 		stateTime += deltaTime;
 		
 		if (velocity.x != 0) {
+			
+			velocity.x -= Math.signum(velocity.x)*Constants.Friction;
 			position.x += velocity.x * deltaTime;
 		}
 		
@@ -61,6 +74,9 @@ public class Bobby extends GameObject {
 			position.y = 0.5f;
 			jump();
 		}
+		
+		if (position.y < deadPoint)
+			die = true;
 		
 		if (position.x < -dimension.x/2 && scale.x < 0)
 			position.x = 10 + dimension.x/2;
@@ -124,5 +140,9 @@ public class Bobby extends GameObject {
 	
 	public boolean isFalling() {
 		return state == BobbyState.Falling;
+	}
+	
+	public boolean isDeath() {
+		return die;
 	}
 }

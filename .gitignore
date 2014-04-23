@@ -1,3 +1,4 @@
 core/bin
 desktop/bin
 android/bin
+/build

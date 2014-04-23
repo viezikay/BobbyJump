@@ -1,6 +1,7 @@
 package com.arrowgames.zk.bobbyjump.objects;
 
 import com.arrowgames.zk.bobbyjump.managers.Assets;
+import com.arrowgames.zk.bobbyjump.managers.ObjectContainer;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.arrowgames.zk.bobbyjump.utils.Constants.PlatformState;
 import com.badlogic.gdx.graphics.Color;
@@ -11,7 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Platform extends GameObject {
 	
 	PlatformState state;
-	boolean canBroken;
+	boolean broken;
+	boolean active;
 
 	@Override
 	public void ini() {
@@ -27,10 +29,10 @@ public class Platform extends GameObject {
 		
 		bound = new Rectangle(0, 0, dimension.x, dimension.y);
 		
-		canBroken = true;
+		broken = false;
+		active = false;
 		
-//		setState(PlatformState.Broken);
-		hit();
+		setState(PlatformState.Normal);
 	}
 
 	@Override
@@ -46,23 +48,21 @@ public class Platform extends GameObject {
 			position.y += velocity.y * deltaTime;
 			
 			if (animation.isAnimationFinished(stateTime))
-				velocity.y = 0;
+				recycle();
 		}
 		
-		bound.setPosition(position.x - bound.width/2,
-				position.y - bound.height/2);
+		if (active)
+			bound.setPosition(position.x - bound.width/2,
+					position.y - bound.height/2);
 	}
 
 	@Override
 	public void render(SpriteBatch batch) {
 
-		if (animation != null) {
-			
+		if (!active) return;
+		
+		if (animation != null)
 			textureRegion = animation.getKeyFrame(stateTime);
-			
-			if (animation.isAnimationFinished(stateTime))
-				return;
-		}
 		
 		batch.begin();
 		batch.draw(textureRegion, position.x - origin.x, position.y - origin.y, 
@@ -73,7 +73,7 @@ public class Platform extends GameObject {
 	
 	public void hit() {
 		
-		if (!canBroken) return;
+		if (!broken) return;
 		
 		setState(PlatformState.Broken);
 		velocity.y = -.1f;
@@ -96,14 +96,34 @@ public class Platform extends GameObject {
 		}
 	}
 	
-	public void rebuild(Vector2 position, Vector2 velocity,
-			boolean canBroken, boolean withSpring) {
+	public void recycle() {
 		
+		velocity.y = 0;
+		bound.setPosition(-500, -500);
+		active = false;
+		
+		ObjectContainer.instance.freePlatform(this);
+	}
+	
+	public void rebuild(Vector2 position, boolean broken) {
+
+		this.rebuild(position, 0, 0, broken);
+	}
+	
+	public void rebuild(Vector2 position, Vector2 velocity, boolean broken) {
+		
+		this.rebuild(position, velocity.x, velocity.y, broken);
+	}
+	
+	public void rebuild(Vector2 position, 
+			float velocityX, float velocityY, boolean broken) {
+
 		this.position.set(position);
 		this.bound.setPosition(position);
-		this.velocity.set(velocity);
+		this.velocity.set(velocityX, velocityY);
 		
-		this.canBroken = canBroken;
-		
+		this.broken = broken;
+		this.active = true;
+		setState(PlatformState.Normal);
 	}
 }
