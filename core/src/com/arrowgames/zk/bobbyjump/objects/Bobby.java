@@ -41,15 +41,18 @@ public class Bobby extends GameObject {
 	
 	public void respawn() {
 		
+		die = false;
+		deadPoint = 0;
+		
 		position.set(Constants.ViewportW/2, 2);
 		velocity.set(0, -2);
 		bound.setPosition(position);
-		
-		die = false;
 	}
 
 	@Override
 	public void update(float deltaTime) {
+		
+		if (die) return;
 		
 		stateTime += deltaTime;
 		

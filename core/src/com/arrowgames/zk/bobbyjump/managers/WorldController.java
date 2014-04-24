@@ -3,6 +3,7 @@ package com.arrowgames.zk.bobbyjump.managers;
 import com.arrowgames.zk.bobbyjump.objects.Bobby;
 import com.arrowgames.zk.bobbyjump.objects.Platform;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
+import com.arrowgames.zk.bobbyjump.utils.ObjectContainer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
@@ -91,7 +92,7 @@ public class WorldController extends InputAdapter {
 		for (Platform platform : platforms)
 			if (bobby.isFalling()) {
 				if (bobby.bound.overlaps(platform.bound)) 
-					if (bobby.position.y > platform.position.y + bobby.dimension.y/2) {
+					if (bobby.position.y > platform.position.y + bobby.bound.height/2) {
 					bobby.jump();
 					platform.hit();
 				}

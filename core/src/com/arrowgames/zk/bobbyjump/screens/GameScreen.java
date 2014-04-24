@@ -5,12 +5,9 @@ import com.arrowgames.zk.bobbyjump.managers.WorldController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
 	
-	SpriteBatch batch;
-
 	WorldController controller;
 	WorldRenderer renderer;
 	
@@ -35,9 +32,8 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		
-		batch = new SpriteBatch();
 		controller = new WorldController();
-		renderer = new WorldRenderer(batch, controller);
+		renderer = new WorldRenderer(controller);
 	}
 
 	@Override

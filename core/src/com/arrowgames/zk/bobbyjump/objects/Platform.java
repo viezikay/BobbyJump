@@ -1,8 +1,8 @@
 package com.arrowgames.zk.bobbyjump.objects;
 
 import com.arrowgames.zk.bobbyjump.managers.Assets;
-import com.arrowgames.zk.bobbyjump.managers.ObjectContainer;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
+import com.arrowgames.zk.bobbyjump.utils.ObjectContainer;
 import com.arrowgames.zk.bobbyjump.utils.Constants.PlatformState;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,9 +34,32 @@ public class Platform extends GameObject {
 		
 		setState(PlatformState.Normal);
 	}
+	
+	public void rebuild(Vector2 position, boolean broken) {
+
+		this.rebuild(position, 0, 0, broken);
+	}
+	
+	public void rebuild(Vector2 position, Vector2 velocity, boolean broken) {
+		
+		this.rebuild(position, velocity.x, velocity.y, broken);
+	}
+	
+	public void rebuild(Vector2 position, 
+			float velocityX, float velocityY, boolean broken) {
+
+		this.position.set(position);
+		this.bound.setPosition(position);
+		this.velocity.set(velocityX, velocityY);
+		
+		this.broken = broken;
+		this.active = true;
+		setState(PlatformState.Normal);
+	}
 
 	@Override
 	public void update(float deltaTime) {
+		if (!active) return;
 		
 		stateTime += deltaTime;
 		
@@ -51,8 +74,7 @@ public class Platform extends GameObject {
 				recycle();
 		}
 		
-		if (active)
-			bound.setPosition(position.x - bound.width/2,
+		bound.setPosition(position.x - bound.width/2,
 					position.y - bound.height/2);
 	}
 
@@ -103,27 +125,5 @@ public class Platform extends GameObject {
 		active = false;
 		
 		ObjectContainer.instance.freePlatform(this);
-	}
-	
-	public void rebuild(Vector2 position, boolean broken) {
-
-		this.rebuild(position, 0, 0, broken);
-	}
-	
-	public void rebuild(Vector2 position, Vector2 velocity, boolean broken) {
-		
-		this.rebuild(position, velocity.x, velocity.y, broken);
-	}
-	
-	public void rebuild(Vector2 position, 
-			float velocityX, float velocityY, boolean broken) {
-
-		this.position.set(position);
-		this.bound.setPosition(position);
-		this.velocity.set(velocityX, velocityY);
-		
-		this.broken = broken;
-		this.active = true;
-		setState(PlatformState.Normal);
 	}
 }

@@ -34,8 +34,6 @@ public class ObjectContainer {
 		
 		platforms.removeValue(platform, true);
 		poolPlatform.free(platform);
-		
-		Gdx.app.log("POOL", "Active Object: " + platforms.size);
 	}
 	
 	public class PoolPlatform extends Pool<Platform> {

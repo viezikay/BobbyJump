@@ -5,7 +5,6 @@ import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class WorldRenderer {
@@ -16,10 +15,10 @@ public class WorldRenderer {
 	
 	WorldController controller;
 	
-	public WorldRenderer(SpriteBatch batch, WorldController controller) {
+	public WorldRenderer(WorldController controller) {
 		
 		this.camera = new OrthographicCamera(Constants.ViewportW, Constants.viewportH);
-		this.batch = batch;
+		this.batch = new SpriteBatch();
 		this.renderer = new ShapeRenderer();
 		
 		this.controller = controller;
@@ -40,7 +39,7 @@ public class WorldRenderer {
 		
 		if (camera.position.y < controller.bobby.position.y + 2) {
 			camera.position.y = controller.bobby.position.y + 2;
-			controller.bobby.deadPoint = camera.position.y - 7.5f;
+			controller.bobby.deadPoint = camera.position.y - 8.5f;
 		}
 		
 		camera.update();
@@ -49,11 +48,12 @@ public class WorldRenderer {
 		renderer.setProjectionMatrix(camera.combined);
 		
 		if (camera.position.y > controller.nextY - 9)
-			controller.createPlatform();			
+			controller.createPlatform();
 
-		for (Platform platform : controller.platforms)
+		for (Platform platform : controller.platforms) {
 			if (platform.position.y < camera.position.y - 8)
 				platform.recycle();
+		}
 
 		
 		if (controller.bobby.isDeath() && Gdx.input.justTouched()) {
