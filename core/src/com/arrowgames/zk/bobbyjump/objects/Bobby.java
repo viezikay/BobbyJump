@@ -27,7 +27,7 @@ public class Bobby extends GameObject {
 	public void ini() {
 		
 		position = new Vector2();
-		dimension = new Vector2(1.2f, 1.2f);
+		dimension = new Vector2(1.0f, 1.0f);
 		origin = new Vector2(dimension.x/2, dimension.y/2);
 		scale = new Vector2(1, 1);
 		rotation = 0;

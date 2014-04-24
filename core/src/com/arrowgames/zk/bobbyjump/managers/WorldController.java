@@ -2,6 +2,7 @@ package com.arrowgames.zk.bobbyjump.managers;
 
 import com.arrowgames.zk.bobbyjump.objects.Bobby;
 import com.arrowgames.zk.bobbyjump.objects.Platform;
+import com.arrowgames.zk.bobbyjump.utils.CameraHelper;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.arrowgames.zk.bobbyjump.utils.ObjectContainer;
 import com.badlogic.gdx.Gdx;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.InputAdapter;
 
 public class WorldController extends InputAdapter {
 
+	CameraHelper cameraHelper;
+	
 	Bobby bobby;
 	Array<Platform> platforms;
 	
@@ -25,6 +28,8 @@ public class WorldController extends InputAdapter {
 		
 		ObjectContainer.instance.ini();
 		
+		cameraHelper = new CameraHelper(bobby);
+		
 		bobby = new Bobby();
 		platforms = ObjectContainer.instance.platforms;
 		nextY = MathUtils.random(1f, 2f);
@@ -33,6 +38,8 @@ public class WorldController extends InputAdapter {
 	}
 	
 	public void rebuild() {
+		
+		cameraHelper.reset();
 		
 		nextY = 0;
 		bobby.respawn();
@@ -77,14 +84,30 @@ public class WorldController extends InputAdapter {
 				bobby.move(-6);
 			
 		}
+		
+		if (bobby.isDeath() && Gdx.input.justTouched())
+			rebuild();
 	}
 	
 	public void updateObject(float deltaTime) {
 		
 		bobby.update(deltaTime);
 		
+		if (cameraHelper.position.y < bobby.position.y + 2) {
+			cameraHelper.position.y = bobby.position.y + 2;
+			bobby.deadPoint = cameraHelper.position.y - 8.5f;
+		}
+		
 		for (Platform platform : platforms)
 			platform.update(deltaTime);
+
+		if (cameraHelper.position.y > nextY - 9)
+			createPlatform();
+
+		for (Platform platform : platforms) {
+			if (platform.position.y < cameraHelper.position.y - 8)
+				platform.recycle();
+		}
 	}
 	
 	public void collisionChecking() {

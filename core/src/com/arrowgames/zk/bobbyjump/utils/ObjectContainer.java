@@ -1,4 +1,4 @@
-package com.arrowgames.zk.bobbyjump.managers;
+package com.arrowgames.zk.bobbyjump.utils;
 
 import com.arrowgames.zk.bobbyjump.objects.Platform;
 import com.badlogic.gdx.Gdx;
@@ -28,6 +28,8 @@ public class ObjectContainer {
 		platform.rebuild(position, true);
 		
 		platforms.add(platform);
+		
+		Gdx.app.log("POLL", "Active Object: " + platforms.size);
 	}
 	
 	public void freePlatform(Platform platform) {

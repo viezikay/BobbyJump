@@ -17,11 +17,8 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(.4f, 0, .4f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		controller.update(delta);
-		renderer.update(delta);
-		
+		controller.update(delta);		
 		renderer.render();
-		renderer.renderBound();
 	}
 
 	@Override
