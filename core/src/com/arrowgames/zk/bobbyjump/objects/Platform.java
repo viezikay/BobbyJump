@@ -35,20 +35,14 @@ public class Platform extends GameObject {
 		setState(PlatformState.Normal);
 	}
 	
-	public void rebuild(Vector2 position, boolean broken) {
-
-		this.rebuild(position, 0, 0, broken);
+	public void rebuild (float x, float y, boolean broken) {
+		rebuild(x, y, 0, 0, broken);
 	}
 	
-	public void rebuild(Vector2 position, Vector2 velocity, boolean broken) {
-		
-		this.rebuild(position, velocity.x, velocity.y, broken);
-	}
-	
-	public void rebuild(Vector2 position, 
+	public void rebuild(float x, float y, 
 			float velocityX, float velocityY, boolean broken) {
 
-		this.position.set(position);
+		this.position.set(x, y);
 		this.bound.setPosition(position);
 		this.velocity.set(velocityX, velocityY);
 		

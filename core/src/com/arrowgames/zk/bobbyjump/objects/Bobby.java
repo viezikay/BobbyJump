@@ -46,7 +46,6 @@ public class Bobby extends GameObject {
 		
 		position.set(Constants.ViewportW/2, 2);
 		velocity.set(0, -2);
-		bound.setPosition(position);
 	}
 
 	@Override
@@ -114,6 +113,13 @@ public class Bobby extends GameObject {
 		setState(BobbyState.Jumping);
 		
 		velocity.y = JumpVelocity;
+	}
+	
+	public void superJump() {
+		
+		setState(BobbyState.Jumping);
+		
+		velocity.y = JumpVelocity*1.5f;
 	}
 
 	public void setState(BobbyState state) {

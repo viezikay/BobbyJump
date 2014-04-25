@@ -2,6 +2,7 @@ package com.arrowgames.zk.bobbyjump.managers;
 
 import com.arrowgames.zk.bobbyjump.objects.Bobby;
 import com.arrowgames.zk.bobbyjump.objects.Platform;
+import com.arrowgames.zk.bobbyjump.objects.Spring;
 import com.arrowgames.zk.bobbyjump.utils.CameraHelper;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.arrowgames.zk.bobbyjump.utils.ObjectContainer;
@@ -9,7 +10,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.InputAdapter;
 
@@ -18,7 +18,9 @@ public class WorldController extends InputAdapter {
 	CameraHelper cameraHelper;
 	
 	Bobby bobby;
+	
 	Array<Platform> platforms;
+	Array<Spring> springs;
 	
 	float nextY;
 	
@@ -31,7 +33,10 @@ public class WorldController extends InputAdapter {
 		cameraHelper = new CameraHelper(bobby);
 		
 		bobby = new Bobby();
+		
 		platforms = ObjectContainer.instance.platforms;
+		springs = ObjectContainer.instance.springs;
+		
 		nextY = MathUtils.random(1f, 2f);
 		
 		rebuild();
@@ -45,6 +50,7 @@ public class WorldController extends InputAdapter {
 		bobby.respawn();
 		
 		if (platforms.size > 0) platforms.clear();
+		if (springs.size > 0) springs.clear();
 		
 		while (nextY < Constants.viewportH+2)
 			createPlatform();
@@ -55,7 +61,7 @@ public class WorldController extends InputAdapter {
 		float x = MathUtils.random(0, Constants.ViewportW);
 		float y = nextY;
 
-		ObjectContainer.instance.createPlatform(new Vector2(x, y));
+		ObjectContainer.instance.createPlatform(x, y);
 
 		nextY += MathUtils.random(1f, 2f);
 	}
@@ -82,7 +88,6 @@ public class WorldController extends InputAdapter {
 				bobby.move(6);
 			else if (Gdx.input.isKeyPressed(Keys.LEFT))
 				bobby.move(-6);
-			
 		}
 		
 		if (bobby.isDeath() && Gdx.input.justTouched())
@@ -94,23 +99,41 @@ public class WorldController extends InputAdapter {
 		bobby.update(deltaTime);
 		
 		if (cameraHelper.position.y < bobby.position.y + 2) {
+			
 			cameraHelper.position.y = bobby.position.y + 2;
 			bobby.deadPoint = cameraHelper.position.y - 8.5f;
 		}
 		
-		for (Platform platform : platforms)
+		for (Platform platform : platforms) {
+			
 			platform.update(deltaTime);
+			
+			if (platform.position.y < cameraHelper.position.y - 8)
+				platform.recycle();
+		}
+
+		for (Spring spring : springs) {
+			spring.update(deltaTime);
+			
+			if (spring.position.y < cameraHelper.position.y - 8)
+				spring.recycle();
+		}
 
 		if (cameraHelper.position.y > nextY - 9)
 			createPlatform();
 
-		for (Platform platform : platforms) {
-			if (platform.position.y < cameraHelper.position.y - 8)
-				platform.recycle();
-		}
 	}
 	
 	public void collisionChecking() {
+
+		for (Spring spring : springs)
+			if (bobby.isFalling()) {
+				if (bobby.bound.overlaps(spring.bound)) 
+					if (bobby.position.y > spring.position.y + bobby.bound.height/2) {
+					bobby.superJump();
+					spring.hit();
+				}
+			}
 
 		for (Platform platform : platforms)
 			if (bobby.isFalling()) {

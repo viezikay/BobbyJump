@@ -1,6 +1,7 @@
 package com.arrowgames.zk.bobbyjump.managers;
 
 import com.arrowgames.zk.bobbyjump.objects.Platform;
+import com.arrowgames.zk.bobbyjump.objects.Spring;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -34,8 +35,12 @@ public class WorldRenderer {
 		for (Platform platform : controller.platforms)
 			platform.render(batch);
 		
+		for (Spring spring : controller.springs)
+			spring.render(batch);
+		
 		controller.bobby.render(batch);
-		renderBound();
+		
+//		renderBound();
 	}
 	
 	public void renderBackground() {
@@ -48,5 +53,8 @@ public class WorldRenderer {
 
 		for (Platform platform : controller.platforms)
 			platform.renderBound(renderer);
+
+		for (Spring spring : controller.springs)
+			spring.renderBound(renderer);
 	}
 }

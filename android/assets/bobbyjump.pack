@@ -87,3 +87,10 @@ monster
   orig: 32, 27
   offset: 0, 0
   index: 0
+spring
+  rotate: false
+  xy: 135, 1
+  size: 20, 18
+  orig: 20, 18
+  offset: 0, 0
+  index: -1

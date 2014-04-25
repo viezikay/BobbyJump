@@ -63,6 +63,7 @@ public class Assets implements Disposable {
 	public class AssetsGameObject {
 		
 		public Animation platform;
+		public TextureRegion spring;
 		
 		public AssetsGameObject(TextureAtlas atlas) {
 			
@@ -70,6 +71,8 @@ public class Assets implements Disposable {
 			
 			keyFrames = atlas.findRegions("platform");
 			platform = new Animation(.15f, keyFrames);
+			
+			spring = atlas.findRegion("spring");
 		}
 	}
 
