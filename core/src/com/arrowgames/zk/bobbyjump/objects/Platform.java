@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Platform extends GameObject {
 	
 	PlatformState state;
-	boolean broken;
+	boolean crunchy;
 	boolean active;
 
 	@Override
@@ -29,24 +29,24 @@ public class Platform extends GameObject {
 		
 		bound = new Rectangle(0, 0, dimension.x, dimension.y);
 		
-		broken = false;
+		crunchy = false;
 		active = false;
 		
 		setState(PlatformState.Normal);
 	}
 	
-	public void rebuild (float x, float y, boolean broken) {
-		rebuild(x, y, 0, 0, broken);
+	public void rebuild (float x, float y, boolean crunchy) {
+		rebuild(x, y, 0, 0, crunchy);
 	}
 	
 	public void rebuild(float x, float y, 
-			float velocityX, float velocityY, boolean broken) {
+			float velocityX, float velocityY, boolean crunchy) {
 
 		this.position.set(x, y);
 		this.bound.setPosition(position);
 		this.velocity.set(velocityX, velocityY);
 		
-		this.broken = broken;
+		this.crunchy = crunchy;
 		this.active = true;
 		setState(PlatformState.Normal);
 	}
@@ -89,7 +89,7 @@ public class Platform extends GameObject {
 	
 	public void hit() {
 		
-		if (!broken) return;
+		if (!crunchy) return;
 		
 		setState(PlatformState.Broken);
 		velocity.y = -.1f;

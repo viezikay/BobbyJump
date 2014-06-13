@@ -11,6 +11,7 @@ public class GameScreen implements Screen {
 	WorldController controller;
 	WorldRenderer renderer;
 	
+	
 	@Override
 	public void render(float delta) {
 		

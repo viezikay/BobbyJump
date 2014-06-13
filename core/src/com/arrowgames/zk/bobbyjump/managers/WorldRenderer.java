@@ -3,9 +3,12 @@ package com.arrowgames.zk.bobbyjump.managers;
 import com.arrowgames.zk.bobbyjump.objects.Platform;
 import com.arrowgames.zk.bobbyjump.objects.Spring;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 public class WorldRenderer {
 
@@ -15,6 +18,8 @@ public class WorldRenderer {
 	
 	WorldController controller;
 	
+	TextureRegion background;
+	
 	public WorldRenderer(WorldController controller) {
 		
 		this.camera = new OrthographicCamera(Constants.ViewportW, Constants.viewportH);
@@ -22,12 +27,17 @@ public class WorldRenderer {
 		this.renderer = new ShapeRenderer();
 		
 		this.controller = controller;
+		
+		Texture texture = new Texture(Gdx.files.internal("bg.png"));
+		background = new TextureRegion(texture);
 	}
 	
 	public void render() {
 		
 		controller.cameraHelper.applyTo(camera);
 		camera.update();
+		
+//		renderBackground();
 		
 		batch.setProjectionMatrix(camera.combined);
 		renderer.setProjectionMatrix(camera.combined);
@@ -44,7 +54,11 @@ public class WorldRenderer {
 	}
 	
 	public void renderBackground() {
-		
+		batch.begin();
+		batch.setColor(.8f, .8f, 0, 1);
+		batch.draw(background, 0, 0, 10, 15);
+		batch.setColor(1, 1, 1, 1);
+		batch.end();
 	}
 	
 	public void renderBound() {
