@@ -4,7 +4,7 @@ import com.arrowgames.zk.bobbyjump.objects.GameObject;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
-public class CameraHelper {
+public class CameraController {
 	
 	public Vector2 position;
 	GameObject target;
@@ -12,7 +12,7 @@ public class CameraHelper {
 	private Vector2 temp;
 	private final float FollowVelocity = 1;
 	
-	public CameraHelper(GameObject target) {
+	public CameraController(GameObject target) {
 	
 		this.target = target;
 		this.position = new Vector2();

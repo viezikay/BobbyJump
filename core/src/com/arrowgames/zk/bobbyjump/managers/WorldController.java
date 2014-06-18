@@ -3,7 +3,7 @@ package com.arrowgames.zk.bobbyjump.managers;
 import com.arrowgames.zk.bobbyjump.objects.Bobby;
 import com.arrowgames.zk.bobbyjump.objects.Platform;
 import com.arrowgames.zk.bobbyjump.objects.Spring;
-import com.arrowgames.zk.bobbyjump.utils.CameraHelper;
+import com.arrowgames.zk.bobbyjump.utils.CameraController;
 import com.arrowgames.zk.bobbyjump.utils.Constants;
 import com.arrowgames.zk.bobbyjump.utils.ObjectContainer;
 import com.badlogic.gdx.Gdx;
@@ -15,10 +15,11 @@ import com.badlogic.gdx.InputAdapter;
 
 public class WorldController extends InputAdapter {
 
-	CameraHelper cameraHelper;
+	CameraController cameraController;
 	
 	Bobby bobby;
 	
+	Platform platform;
 	Array<Platform> platforms;
 	Array<Spring> springs;
 	
@@ -30,9 +31,11 @@ public class WorldController extends InputAdapter {
 		
 		ObjectContainer.instance.ini();
 		
-		cameraHelper = new CameraHelper(bobby);
+		cameraController = new CameraController(bobby);
 		
 		bobby = new Bobby();
+		platform = new Platform();
+		platform.rebuild(5, 3, false);
 		
 		platforms = ObjectContainer.instance.platforms;
 		springs = ObjectContainer.instance.springs;
@@ -44,7 +47,7 @@ public class WorldController extends InputAdapter {
 	
 	public void rebuild() {
 		
-		cameraHelper.reset();
+		cameraController.reset();
 		
 		nextY = 0;
 		bobby.respawn();
@@ -98,44 +101,46 @@ public class WorldController extends InputAdapter {
 		
 		bobby.update(deltaTime);
 		
-		if (cameraHelper.position.y < bobby.position.y + 2) {
+		if (cameraController.position.y < bobby.position.y + 2) {
 			
-			cameraHelper.position.y = bobby.position.y + 2;
-			bobby.deadPoint = cameraHelper.position.y - 8.5f;
+			cameraController.position.y = bobby.position.y + 2;
+			bobby.deadPoint = cameraController.position.y - 8.5f;
 		}
 		
-		for (Platform platform : platforms) {
-			
-			platform.update(deltaTime);
-			
-			if (platform.position.y < cameraHelper.position.y - 8)
-				platform.recycle();
-		}
+		platform.update(deltaTime);
+		
+//		for (Platform platform : platforms) {
+//			
+//			platform.update(deltaTime);
+//			
+//			if (platform.position.y < cameraHelper.position.y - 8)
+//				platform.recycle();
+//		}
 
 		for (Spring spring : springs) {
 			spring.update(deltaTime);
 			
-			if (spring.position.y < cameraHelper.position.y - 8)
+			if (spring.position.y < cameraController.position.y - 8)
 				spring.recycle();
 		}
 
-		if (cameraHelper.position.y > nextY - 9)
+		if (cameraController.position.y > nextY - 9)
 			createPlatform();
 
 	}
 	
 	public void collisionChecking() {
 
-		for (Spring spring : springs)
-			if (bobby.isFalling()) {
-				if (bobby.bound.overlaps(spring.bound)) 
-					if (bobby.position.y > spring.position.y + bobby.bound.height/2) {
-					bobby.superJump();
-					spring.hit();
-				}
-			}
-
-		for (Platform platform : platforms)
+//		for (Spring spring : springs)
+//			if (bobby.isFalling()) {
+//				if (bobby.bound.overlaps(spring.bound)) 
+//					if (bobby.position.y > spring.position.y + bobby.bound.height/2) {
+//					bobby.superJump();
+//					spring.hit();
+//				}
+//			}
+//
+//		for (Platform platform : platforms)
 			if (bobby.isFalling()) {
 				if (bobby.bound.overlaps(platform.bound)) 
 					if (bobby.position.y > platform.position.y + bobby.bound.height/2) {

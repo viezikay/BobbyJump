@@ -18,8 +18,6 @@ public class WorldRenderer {
 	
 	WorldController controller;
 	
-	TextureRegion background;
-	
 	public WorldRenderer(WorldController controller) {
 		
 		this.camera = new OrthographicCamera(Constants.ViewportW, Constants.viewportH);
@@ -27,14 +25,11 @@ public class WorldRenderer {
 		this.renderer = new ShapeRenderer();
 		
 		this.controller = controller;
-		
-		Texture texture = new Texture(Gdx.files.internal("bg.png"));
-		background = new TextureRegion(texture);
 	}
 	
 	public void render() {
 		
-		controller.cameraHelper.applyTo(camera);
+		controller.cameraController.applyTo(camera);
 		camera.update();
 		
 //		renderBackground();
@@ -42,33 +37,31 @@ public class WorldRenderer {
 		batch.setProjectionMatrix(camera.combined);
 		renderer.setProjectionMatrix(camera.combined);
 		
-		for (Platform platform : controller.platforms)
-			platform.render(batch);
+//		for (Platform platform : controller.platforms)
+//			platform.render(batch);
+//		
+//		for (Spring spring : controller.springs)
+//			spring.render(batch);
 		
-		for (Spring spring : controller.springs)
-			spring.render(batch);
-		
+		controller.platform.render(batch);
 		controller.bobby.render(batch);
 		
-//		renderBound();
+		renderBound();
 	}
 	
 	public void renderBackground() {
 		batch.begin();
-		batch.setColor(.8f, .8f, 0, 1);
-		batch.draw(background, 0, 0, 10, 15);
-		batch.setColor(1, 1, 1, 1);
 		batch.end();
 	}
 	
 	public void renderBound() {
 		
 		controller.bobby.renderBound(renderer);
-
-		for (Platform platform : controller.platforms)
-			platform.renderBound(renderer);
-
-		for (Spring spring : controller.springs)
-			spring.renderBound(renderer);
+		controller.platform.renderBound(renderer);
+//		for (Platform platform : controller.platforms)
+//			platform.renderBound(renderer);
+//
+//		for (Spring spring : controller.springs)
+//			spring.renderBound(renderer);
 	}
 }
